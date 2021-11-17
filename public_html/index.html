@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Nuevo ejemplo de JSON</title>
+  <!--Estilos-->
+  <style>
+.input-container{
+	position:relative;
+	margin-bottom:0px;
+}
+.input-container label{
+	position:absolute;
+	top:0px;
+	left:0px;
+	font-size:14px;
+	color:#000;
+        font-weight:bold;
+     
+	
+}
+.input-container input{ 
+   
+  border:0;
+  border-bottom:1px solid #555;  
+  background:transparent;
+  width:200px;
+  padding:12px 0 0 0;
+  font-size:14px;
+  color:#000;
+}
+
+
+    body{background:white;font-family:sans-serif;}
+    #formulario{width: 900px;margin: 0 auto;}
+    #eliminar{width: 50px;}
+    table {margin: 0 auto; border-collapse: collapse;width: 600px;}
+    th, td {width: 100px;padding: 8px;text-align: left;border-bottom: 1px solid #ddd;}
+    tr:nth-child(even){background-color: rgba(0,0,255,0.1);}
+    
+    
+    
+    div{width: 200px; margin-left: 10px;margin-top: 5px;}
+    legend{border: 2px solid #000;border-radius: 15px ;background-color: #000;color:white;font-size: 12px;padding: 7px;}
+    h4{text-align: center; }
+    
+    .button{
+    background-color: #000;
+    border: 1px solid #000;
+    border-radius: 10px ;
+    color: white;
+    padding: 7px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    transition-duration: 1s;
+    cursor: pointer;
+}
+    .button:hover {
+        background-color: #666666;
+    color: white;
+}
+  </style>
+</head>
+<body>
+  
+ 
+  <div id="formulario">
+    <fieldset>
+        <legend> Datos de la Pelicula.</legend>
+        <div class="input-container">
+        <label>Nombre:</label>
+          <input id="nombre" type="text" name="nombre" onchange="agregarNombre(this)"/>
+        </div>
+        <br/>
+        <div class="input-container">
+      <label>Edad:</label>
+          <input id="edad" type="number" name="edad" onchange="agregarEdad(this)"/>
+        </div>
+          <br/>
+          <div class="input-container">
+      <label>Telefono:</label>
+          <input id="telefono" type="number" name="telefono" onchange="agregarTelefono(this)"/>
+        </div>
+           <input id="eliminar" type="number" >
+      
+      <button class='button' onclick="agregar(); mostrar();">Agregar</button>   
+        <button class="button" onclick="eliminar();">Eliminar</button>
+        <button class="button" onclick="actualizar();">Actualizar</button>
+   
+   <br><br><br>     
+    </fieldset>
+      <fieldset>
+        <legend>Busqueda por nombre.</legend>
+        <div class="input-container">
+        <label>Nombre:</label>
+          <input type="text" id="buscar"/>
+        </div>
+        <button class="button" onclick="buscar();">Buscar</button>
+    </fieldset>
+  
+  </div> 
+  <hr/>
+  <div id="registros">No. de registros: </div>
+  <h4>Resultados:</h4>
+  <table>
+    <tr>
+      <th>No. de Registro</th>
+       <th>Nombre</th>
+       <th>Edad</th>
+       <th>Telefono</th>
+      
+    </tr>
+  </table>
+  
+  <table id="resultado5"></table>
+  
+  <script>
+    var nombre = null;
+     var edad = null;
+     var telefono = null;
+   
+    
+    var arreglo = new Array();
+    
+    var j = 0;
+    
+    function agregarNombre(parametro){
+      nombre = parametro.value;
+     
+      }
+    function agregarEdad(parametro){
+      edad = parametro.value;
+     
+    }
+    function agregarTelefono(parametro){
+      telefono = parametro.value;
+     
+    }
+    
+     
+    function agregar(){
+     
+      var objeto = {
+        "nombre": nombre,
+        "edad": edad,
+        "telefono": telefono
+        };
+     
+      arreglo[j]=objeto;
+      j++;
+      document.getElementById("registros").innerHTML = "No. de registros: " + j;
+      alert("Registro Guardado");
+      
+     
+    
+     limpiar();
+    }
+    function mostrar(){
+      var msj = "";
+      for(var i = 0; i < arreglo.length; i++){
+        msj += "<tr>"+
+                  "<td>"+ (i + 1) + "</td>"+
+                  "<td>"+ arreglo[i].nombre + "</td>"+
+                  "<td>"+ arreglo[i].edad + "</td>"+
+                  "<td>"+ arreglo[i].telefono + "</td>";
+      }
+      document.getElementById("resultado5").innerHTML = msj;
+    }
+    function actualizar(){
+        document.getElementById("resultado5").innerHTML = "";
+       
+        mostrar();
+        
+    }
+    function eliminar(){
+        var registro = document.getElementById("eliminar").value;
+        
+        if(arreglo[registro - 1]){
+            eli = registro - 1; 
+         j = arreglo.length - 1;
+        arreglo.splice(eli,1);
+        document.getElementById("registros").innerHTML = "No. de registros: " + (j);
+        alert("El registro No." + registro + " se ha eliminado exitosamente." );
+       
+        
+    }
+        else{alert("El registro no se ha encontrado.");}
+        
+    }
+    function buscar(){
+        var r = document.getElementById("buscar").value;
+      
+       for(i = 0;i < arreglo.length; i++){
+           
+            if(r === arreglo[i].nombre){
+           
+        var a = arreglo[i].nombre;
+        var b = arreglo[i].edad;
+        var c =  arreglo[i].telefono;
+        
+    
+           document.getElementById("nombre").value = a;
+            document.getElementById("edad").value= b;
+            document.getElementById("telefono").value = c;   }
+        
+              
+        }   
+    }
+    function limpiar(){
+        document.getElementById("nombre").value = "";
+            document.getElementById("edad").value= "";
+            document.getElementById("telefono").value = ""; 
+        
+    }
+    
+  </script>
+</body>
+</html>
